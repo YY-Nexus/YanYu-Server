@@ -1,0 +1,278 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+}
+
+/* 彩虹背景动画 */
+.rainbow-background {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+/* 天蓝色渐变背景 */
+.sky-blue-background {
+  background: linear-gradient(-45deg, #87ceeb, #2e86ab, #a23b72, #f18f01);
+  background-size: 400% 400%;
+  animation: gradient 20s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 彩虹文字 */
+.rainbow-text {
+  background-image: linear-gradient(to right, #ff8a00, #e52e71, #2193b0, #6dd5ed);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow-text-animation 6s ease infinite;
+  background-size: 400% 100%;
+}
+
+@keyframes rainbow-text-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 玻璃态效果 */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.glass-effect-dark {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* 卡片悬停效果 */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* 浮动动画 */
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* 脉冲发光效果 */
+.pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(66, 153, 225, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(66, 153, 225, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(66, 153, 225, 0);
+  }
+}
+
+/* 彩虹按钮 */
+.btn-rainbow {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-rainbow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.btn-rainbow:active {
+  transform: translateY(1px);
+}
+
+/* 进度条动画 */
+.animated-progress {
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-progress::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: progress-shine 2s infinite;
+}
+
+@keyframes progress-shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* 星级评分 */
+.star-rating {
+  display: inline-flex;
+}
+
+.star {
+  color: #ccc;
+  transition: color 0.2s ease;
+}
+
+.star.filled {
+  color: #ffc107;
+  animation: star-pulse 1s ease-in-out;
+}
+
+@keyframes star-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 浮动气泡背景 */
+.floating-bubbles {
+  position: relative;
+  overflow: hidden;
+}
+
+.floating-bubbles::before,
+.floating-bubbles::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  z-index: -1;
+}
+
+.floating-bubbles::before {
+  top: -100px;
+  left: -100px;
+  animation: bubble-float 15s infinite linear;
+}
+
+.floating-bubbles::after {
+  bottom: -100px;
+  right: -100px;
+  width: 200px;
+  height: 200px;
+  animation: bubble-float 12s infinite linear reverse;
+}
+
+@keyframes bubble-float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(50px, 50px) rotate(90deg);
+  }
+  50% {
+    transform: translate(0, 100px) rotate(180deg);
+  }
+  75% {
+    transform: translate(-50px, 50px) rotate(270deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
+}
+
+/* 统一按钮样式 */
+.unified-button {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.unified-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.unified-button:active {
+  transform: translateY(1px);
+}
