@@ -1,5 +1,6 @@
 "use client"
 
+import type { Viewport } from "next"
 import { useState, useEffect } from "react"
 import { MainLayout } from "@/components/layouts/main-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -16,7 +17,6 @@ import {
   MessageSquare,
   Activity,
   Database,
-  Cloud,
   Shield,
   Zap,
   CheckCircle,
@@ -28,6 +28,17 @@ import {
   AlertTriangle,
 } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+}
 
 interface Integration {
   id: string
@@ -289,73 +300,73 @@ export default function IntegrationsPage() {
 
         {/* 统计概览 */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="glass-effect card-hover">
+          <Card className="glass-effect">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">总集成数</p>
+                  <p className="text-sm font-medium text-muted-foreground">总集成数</p>
                   <p className="text-2xl font-bold">{integrations.length}</p>
                 </div>
-                <Settings className="h-8 w-8 text-blue-500" />
+                <Settings className="h-8 w-8 text-muted-foreground" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="glass-effect card-hover">
+          <Card className="glass-effect">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">活跃集成</p>
+                  <p className="text-sm font-medium text-muted-foreground">活跃集成</p>
                   <p className="text-2xl font-bold text-green-600">
                     {integrations.filter((i) => i.status === "active").length}
                   </p>
                 </div>
-                <CheckCircle className="h-8 w-8 text-green-500" />
+                <CheckCircle className="h-8 w-8 text-green-600" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="glass-effect card-hover">
+          <Card className="glass-effect">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">异常集成</p>
+                  <p className="text-sm font-medium text-muted-foreground">错误集成</p>
                   <p className="text-2xl font-bold text-red-600">
                     {integrations.filter((i) => i.status === "error").length}
                   </p>
                 </div>
-                <AlertTriangle className="h-8 w-8 text-red-500" />
+                <XCircle className="h-8 w-8 text-red-600" />
               </div>
             </CardContent>
           </Card>
 
-          <Card className="glass-effect card-hover">
+          <Card className="glass-effect">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">平均正常运行时间</p>
+                  <p className="text-sm font-medium text-muted-foreground">平均正常运行时间</p>
                   <p className="text-2xl font-bold text-blue-600">
-                    {(integrations.reduce((acc, i) => acc + (i.metrics?.uptime || 0), 0) / integrations.length).toFixed(
-                      1,
-                    )}
+                    {(
+                      integrations.filter((i) => i.metrics).reduce((sum, i) => sum + (i.metrics?.uptime || 0), 0) /
+                      integrations.filter((i) => i.metrics).length
+                    ).toFixed(1)}
                     %
                   </p>
                 </div>
-                <Cloud className="h-8 w-8 text-blue-500" />
+                <Activity className="h-8 w-8 text-blue-600" />
               </div>
             </CardContent>
           </Card>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="glass-effect">
             <TabsTrigger value="overview">集成概览</TabsTrigger>
             <TabsTrigger value="testing">集成测试</TabsTrigger>
-            <TabsTrigger value="settings">全局设置</TabsTrigger>
+            <TabsTrigger value="settings">配置管理</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
-            {/* 按类型分组显示集成 */}
             {Object.entries(groupedIntegrations).map(([type, typeIntegrations]) => {
               const TypeIcon = typeIcons[type as keyof typeof typeIcons]
               return (
@@ -370,83 +381,69 @@ export default function IntegrationsPage() {
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {typeIntegrations.map((integration) => {
-                        const Icon = integration.icon
+                        const IconComponent = integration.icon
                         return (
-                          <Card key={integration.id} className="card-hover">
-                            <CardContent className="p-4">
-                              <div className="flex items-start justify-between mb-3">
-                                <div className="flex items-center gap-3">
-                                  <div className={`p-2 rounded-full ${integration.color} text-white`}>
-                                    <Icon className="h-4 w-4" />
+                          <Card key={integration.id} className="glass-effect border">
+                            <CardHeader className="pb-3">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <div className={`p-2 rounded-lg ${integration.color}`}>
+                                    <IconComponent className="h-4 w-4 text-white" />
                                   </div>
-                                  <div>
-                                    <h4 className="font-medium">{integration.name}</h4>
-                                    <p className="text-xs text-muted-foreground">{integration.description}</p>
-                                  </div>
+                                  <CardTitle className="text-lg">{integration.name}</CardTitle>
                                 </div>
-                                {getStatusIcon(integration.status)}
-                              </div>
-
-                              <div className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-sm">状态</span>
+                                <div className="flex items-center gap-2">
+                                  {getStatusIcon(integration.status)}
                                   <Badge className={getStatusColor(integration.status)}>
                                     {integration.status === "active"
                                       ? "活跃"
                                       : integration.status === "inactive"
                                         ? "未激活"
-                                        : "异常"}
+                                        : "错误"}
                                   </Badge>
                                 </div>
-
-                                {integration.metrics && (
-                                  <>
-                                    <div className="flex items-center justify-between">
-                                      <span className="text-sm">请求数</span>
-                                      <span className="text-sm font-medium">{integration.metrics.requests}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                      <span className="text-sm">错误数</span>
-                                      <span className="text-sm font-medium text-red-600">
-                                        {integration.metrics.errors}
-                                      </span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                      <span className="text-sm">正常运行时间</span>
-                                      <span className="text-sm font-medium text-green-600">
-                                        {integration.metrics.uptime}%
-                                      </span>
-                                    </div>
-                                  </>
-                                )}
-
-                                {integration.lastSync && (
-                                  <div className="flex items-center justify-between">
-                                    <span className="text-sm">最后同步</span>
-                                    <span className="text-xs text-muted-foreground">{integration.lastSync}</span>
+                              </div>
+                              <CardDescription>{integration.description}</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                              {integration.metrics && (
+                                <div className="grid grid-cols-3 gap-2 text-sm">
+                                  <div className="text-center">
+                                    <div className="font-semibold">{integration.metrics.requests}</div>
+                                    <div className="text-muted-foreground">请求数</div>
                                   </div>
-                                )}
+                                  <div className="text-center">
+                                    <div className="font-semibold">{integration.metrics.errors}</div>
+                                    <div className="text-muted-foreground">错误数</div>
+                                  </div>
+                                  <div className="text-center">
+                                    <div className="font-semibold">{integration.metrics.uptime}%</div>
+                                    <div className="text-muted-foreground">正常运行</div>
+                                  </div>
+                                </div>
+                              )}
+
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <Label htmlFor={`toggle-${integration.id}`} className="text-sm">
+                                    启用集成
+                                  </Label>
+                                  <Switch
+                                    id={`toggle-${integration.id}`}
+                                    checked={integration.status === "active"}
+                                    onCheckedChange={() => toggleIntegration(integration.id)}
+                                    disabled={isLoading}
+                                  />
+                                </div>
+                                <Button variant="outline" size="sm" onClick={() => setSelectedIntegration(integration)}>
+                                  <Edit className="h-4 w-4 mr-1" />
+                                  配置
+                                </Button>
                               </div>
 
-                              <div className="flex items-center justify-between mt-4 pt-3 border-t">
-                                <Switch
-                                  checked={integration.status === "active"}
-                                  onCheckedChange={() => toggleIntegration(integration.id)}
-                                  disabled={isLoading}
-                                />
-                                <div className="flex gap-1">
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => setSelectedIntegration(integration)}
-                                  >
-                                    <Edit className="h-3 w-3" />
-                                  </Button>
-                                  <Button size="sm" variant="outline">
-                                    <ExternalLink className="h-3 w-3" />
-                                  </Button>
-                                </div>
-                              </div>
+                              {integration.lastSync && (
+                                <div className="text-xs text-muted-foreground">最后同步: {integration.lastSync}</div>
+                              )}
                             </CardContent>
                           </Card>
                         )
@@ -459,37 +456,29 @@ export default function IntegrationsPage() {
           </TabsContent>
 
           <TabsContent value="testing" className="space-y-6">
-            <Card className="glass-effect">
-              <CardHeader>
-                <CardTitle>集成测试</CardTitle>
-                <CardDescription>测试各个集成的连接状态和功能</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <IntegrationTestPanel />
-              </CardContent>
-            </Card>
+            <IntegrationTestPanel integrations={integrations} />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
             <Card className="glass-effect">
               <CardHeader>
-                <CardTitle>全局设置</CardTitle>
+                <CardTitle>全局集成设置</CardTitle>
                 <CardDescription>配置集成的全局参数和默认行为</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
-                    <div>
+                    <div className="space-y-2">
                       <Label htmlFor="retry-attempts">重试次数</Label>
-                      <Input id="retry-attempts" type="number" defaultValue="3" className="mt-1" />
+                      <Input id="retry-attempts" type="number" defaultValue="3" />
                     </div>
-                    <div>
+                    <div className="space-y-2">
                       <Label htmlFor="timeout">超时时间 (秒)</Label>
-                      <Input id="timeout" type="number" defaultValue="30" className="mt-1" />
+                      <Input id="timeout" type="number" defaultValue="30" />
                     </div>
-                    <div>
+                    <div className="space-y-2">
                       <Label htmlFor="batch-size">批处理大小</Label>
-                      <Input id="batch-size" type="number" defaultValue="100" className="mt-1" />
+                      <Input id="batch-size" type="number" defaultValue="100" />
                     </div>
                   </div>
 
@@ -499,28 +488,36 @@ export default function IntegrationsPage() {
                       <Switch id="auto-retry" defaultChecked />
                     </div>
                     <div className="flex items-center justify-between">
-                      <Label htmlFor="error-notifications">错误通知</Label>
-                      <Switch id="error-notifications" defaultChecked />
+                      <Label htmlFor="circuit-breaker">熔断器</Label>
+                      <Switch id="circuit-breaker" defaultChecked />
                     </div>
                     <div className="flex items-center justify-between">
-                      <Label htmlFor="debug-mode">调试模式</Label>
-                      <Switch id="debug-mode" />
+                      <Label htmlFor="rate-limiting">速率限制</Label>
+                      <Switch id="rate-limiting" defaultChecked />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="health-check">健康检查</Label>
+                      <Switch id="health-check" defaultChecked />
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t">
-                  <Button className="unified-button">
-                    <Settings className="h-4 w-4 mr-2" />
-                    保存设置
-                  </Button>
+                <div className="flex justify-end">
+                  <Button>保存设置</Button>
                 </div>
               </CardContent>
             </Card>
 
+            {/* 环境变量配置提示 */}
             <Alert>
               <AlertTriangle className="h-4 w-4" />
-              <AlertDescription>修改全局设置将影响所有集成的行为。请确保在生产环境中谨慎操作。</AlertDescription>
+              <AlertDescription>
+                某些集成需要配置环境变量才能正常工作。请确保在部署环境中设置了相应的API密钥和Webhook URL。
+                <Button variant="link" className="p-0 h-auto ml-2">
+                  <ExternalLink className="h-4 w-4 mr-1" />
+                  查看配置文档
+                </Button>
+              </AlertDescription>
             </Alert>
           </TabsContent>
         </Tabs>

@@ -1,70 +1,363 @@
+"use client"
+
+import type { Viewport } from "next"
+import { Header } from "@/components/ui/header"
+import { Footer } from "@/components/ui/footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle, AlertTriangle } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { CheckCircle, Shield, FileText, Users, Lock, Eye, Database, AlertTriangle } from "lucide-react"
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+}
 
 export default function CompliancePage() {
+  const breadcrumbItems = [{ label: "首页", href: "/" }, { label: "合规信息" }]
+
+  const complianceItems = [
+    {
+      title: "GDPR (通用数据保护条例)",
+      status: "compliant",
+      description: "符合欧盟通用数据保护条例要求",
+      details: ["用户数据加密存储", "提供数据删除权利", "明确的隐私政策", "数据处理透明度"],
+    },
+    {
+      title: "CCPA (加州消费者隐私法)",
+      status: "compliant",
+      description: "符合加州消费者隐私法要求",
+      details: ["用户数据访问权", "数据销售选择退出", "数据收集透明度", "非歧视性原则"],
+    },
+    {
+      title: "SOC 2 Type II",
+      status: "in-progress",
+      description: "正在进行SOC 2 Type II认证",
+      details: ["安全控制措施", "可用性保证", "处理完整性", "保密性维护"],
+    },
+    {
+      title: "ISO 27001",
+      status: "planned",
+      description: "计划获得ISO 27001信息安全管理认证",
+      details: ["信息安全管理体系", "风险评估流程", "安全控制实施", "持续改进机制"],
+    },
+  ]
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "compliant":
+        return "bg-green-100 text-green-800"
+      case "in-progress":
+        return "bg-yellow-100 text-yellow-800"
+      case "planned":
+        return "bg-blue-100 text-blue-800"
+      default:
+        return "bg-gray-100 text-gray-800"
+    }
+  }
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case "compliant":
+        return "已合规"
+      case "in-progress":
+        return "进行中"
+      case "planned":
+        return "计划中"
+      default:
+        return "未知"
+    }
+  }
+
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">合规监控中心</h1>
-        <Badge variant="outline" className="text-sm">
-          国内版本
-        </Badge>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <Header title="合规信息" showBreadcrumb={true} breadcrumbItems={breadcrumbItems} />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">网络安全法</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">合规</div>
-            <p className="text-xs text-muted-foreground">等级保护备案已完成</p>
-          </CardContent>
-        </Card>
+      <main className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto space-y-8">
+          {/* 概览 */}
+          <Card className="glass-effect">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Shield className="w-6 h-6 mr-2" />
+                合规概览
+              </CardTitle>
+              <CardDescription>我们致力于遵守全球数据保护和隐私法规</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-green-600">2</div>
+                  <p className="text-sm text-muted-foreground">已合规标准</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-yellow-600">1</div>
+                  <p className="text-sm text-muted-foreground">进行中认证</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-600">1</div>
+                  <p className="text-sm text-muted-foreground">计划中标准</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">数据安全法</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-yellow-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">待完善</div>
-            <p className="text-xs text-muted-foreground">数据分类分级需要优化</p>
-          </CardContent>
-        </Card>
+          <Tabs defaultValue="standards" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="standards">合规标准</TabsTrigger>
+              <TabsTrigger value="privacy">隐私政策</TabsTrigger>
+              <TabsTrigger value="security">安全措施</TabsTrigger>
+              <TabsTrigger value="contact">联系我们</TabsTrigger>
+            </TabsList>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">个人信息保护法</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-yellow-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">待完善</div>
-            <p className="text-xs text-muted-foreground">用户同意机制需要加强</p>
-          </CardContent>
-        </Card>
-      </div>
+            {/* 合规标准 */}
+            <TabsContent value="standards">
+              <div className="space-y-6">
+                {complianceItems.map((item, index) => (
+                  <Card key={index} className="glass-effect">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center">
+                          <CheckCircle className="w-5 h-5 mr-2" />
+                          {item.title}
+                        </CardTitle>
+                        <Badge className={getStatusColor(item.status)}>{getStatusText(item.status)}</Badge>
+                      </div>
+                      <CardDescription>{item.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {item.details.map((detail, detailIndex) => (
+                          <div key={detailIndex} className="flex items-center">
+                            <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                            <span className="text-sm">{detail}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>合规状态概览</CardTitle>
-          <CardDescription>基于国内法律法规的合规性评估</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">整体合规得分</span>
-              <span className="text-2xl font-bold">75%</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-yellow-600 h-2 rounded-full" style={{ width: "75%" }}></div>
-            </div>
-            <p className="text-sm text-muted-foreground">建议优先完善数据安全法和个人信息保护法相关要求</p>
-          </div>
-        </CardContent>
-      </Card>
+            {/* 隐私政策 */}
+            <TabsContent value="privacy">
+              <Card className="glass-effect">
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Eye className="w-5 h-5 mr-2" />
+                    隐私政策
+                  </CardTitle>
+                  <CardDescription>我们如何收集、使用和保护您的个人信息</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-semibold mb-2">信息收集</h3>
+                      <p className="text-sm text-muted-foreground">
+                        我们仅收集为提供服务所必需的信息，包括账户信息、使用数据和技术信息。
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold mb-2">信息使用</h3>
+                      <p className="text-sm text-muted-foreground">
+                        收集的信息用于提供和改进服务、确保安全性、遵守法律要求。
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold mb-2">信息保护</h3>
+                      <p className="text-sm text-muted-foreground">
+                        我们采用行业标准的安全措施保护您的信息，包括加密、访问控制和定期安全审计。
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold mb-2">用户权利</h3>
+                      <p className="text-sm text-muted-foreground">
+                        您有权访问、更正、删除您的个人信息，以及限制或反对某些处理活动。
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* 安全措施 */}
+            <TabsContent value="security">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="glass-effect">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Lock className="w-5 h-5 mr-2" />
+                      数据加密
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        传输中加密 (TLS 1.3)
+                      </li>
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        静态数据加密 (AES-256)
+                      </li>
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        密钥管理系统
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <Card className="glass-effect">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Users className="w-5 h-5 mr-2" />
+                      访问控制
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        多因素认证
+                      </li>
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        基于角色的权限
+                      </li>
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        定期权限审查
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <Card className="glass-effect">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Database className="w-5 h-5 mr-2" />
+                      数据备份
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        自动化备份
+                      </li>
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        异地存储
+                      </li>
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        定期恢复测试
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <Card className="glass-effect">
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <AlertTriangle className="w-5 h-5 mr-2" />
+                      安全监控
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        24/7 安全监控
+                      </li>
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        威胁检测系统
+                      </li>
+                      <li className="flex items-center">
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                        事件响应计划
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            {/* 联系我们 */}
+            <TabsContent value="contact">
+              <Card className="glass-effect">
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <FileText className="w-5 h-5 mr-2" />
+                    合规联系方式
+                  </CardTitle>
+                  <CardDescription>如有合规相关问题，请联系我们</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="font-semibold mb-2">数据保护官 (DPO)</h3>
+                      <p className="text-sm text-muted-foreground mb-2">负责数据保护和隐私相关事务</p>
+                      <p className="text-sm">
+                        <strong>邮箱:</strong> dpo@yanyuyun.asia
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold mb-2">合规团队</h3>
+                      <p className="text-sm text-muted-foreground mb-2">处理合规性问题和认证事务</p>
+                      <p className="text-sm">
+                        <strong>邮箱:</strong> compliance@yanyuyun.asia
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold mb-2">法务部门</h3>
+                      <p className="text-sm text-muted-foreground mb-2">处理法律相关问题和合同事务</p>
+                      <p className="text-sm">
+                        <strong>邮箱:</strong> legal@yanyuyun.asia
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold mb-2">安全团队</h3>
+                      <p className="text-sm text-muted-foreground mb-2">处理安全事件和漏洞报告</p>
+                      <p className="text-sm">
+                        <strong>邮箱:</strong> security@yanyuyun.asia
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="border-t pt-6">
+                    <h3 className="font-semibold mb-2">办公地址</h3>
+                    <p className="text-sm text-muted-foreground">
+                      中国北京市朝阳区建国门外大街1号
+                      <br />
+                      国贸大厦A座2001室
+                      <br />
+                      邮编: 100020
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </main>
+
+      <Footer />
     </div>
   )
 }

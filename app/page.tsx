@@ -1,5 +1,6 @@
 "use client"
 
+import type { Viewport } from "next"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -30,6 +31,17 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+}
 
 export default function Home() {
   const [input, setInput] = useState("")
