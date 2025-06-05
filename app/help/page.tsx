@@ -1,6 +1,5 @@
 "use client"
 
-import type { Viewport } from "next"
 import { Header } from "@/components/ui/header"
 import { Footer } from "@/components/ui/footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -21,17 +20,6 @@ import {
   Download,
   ExternalLink,
 } from "lucide-react"
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
-}
 
 export default function HelpPage() {
   const breadcrumbItems = [{ label: "首页", href: "/" }, { label: "帮助中心" }]

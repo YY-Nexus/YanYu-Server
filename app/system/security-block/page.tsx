@@ -1,17 +1,5 @@
-import type { Viewport } from "next"
 import { AlertTriangle, ShieldAlert } from "lucide-react"
 import Link from "next/link"
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
-}
 
 export default function SecurityBlockPage() {
   return (

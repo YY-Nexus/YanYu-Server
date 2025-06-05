@@ -1,6 +1,5 @@
 "use client"
 
-import type { Viewport } from "next"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -14,17 +13,6 @@ import { MainLayout } from "@/components/layouts/main-layout"
 import { AIModelDiagram } from "@/components/ai-model-diagram"
 import { Brain, GitMerge, Zap, Settings, Plus, Trash2, Edit, Check, X, Loader2, RefreshCw } from "lucide-react"
 import { toast } from "sonner"
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
-}
 
 interface Model {
   modelId: string

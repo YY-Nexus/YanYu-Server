@@ -1,12 +1,33 @@
-import type { Viewport } from "next"
+"use client"
 
-export const defaultViewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
+import { useState, useEffect } from "react"
+
+export function viewport() {
+  if (typeof window === "undefined") {
+    return { width: 1024, height: 768 } // 默认值用于服务器端
+  }
+
+  return {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  }
+}
+
+export function useViewport() {
+  const [dimensions, setDimensions] = useState({ width: 1024, height: 768 })
+
+  useEffect(() => {
+    function handleResize() {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
+    }
+
+    handleResize() // 初始化
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  return dimensions
 }

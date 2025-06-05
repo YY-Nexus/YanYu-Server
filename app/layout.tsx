@@ -1,5 +1,5 @@
 import type React from "react"
-import type { Metadata, Viewport } from "next"
+import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@/components/ui/toaster"
@@ -31,23 +31,22 @@ export const metadata: Metadata = {
     title: "YYC³ NetTrack AI协同平台",
     description: "企业级多AI模型协作与安全审计系统",
   },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
   robots: {
     index: true,
     follow: true,
   },
-  category: "technology",
-  metadataBase: new URL("https://yanyuyun.asia"),
-    generator: 'v0.dev'
-}
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     { media: "(prefers-color-scheme: dark)", color: "#000000" },
   ],
+  category: "technology",
+  metadataBase: new URL("https://yanyuyun.asia"),
+    generator: 'v0.dev'
 }
 
 export default function RootLayout({
