@@ -1,5 +1,6 @@
 "use client"
 
+import type { Viewport } from "next"
 import { useState } from "react"
 import { Header } from "@/components/ui/header"
 import { Footer } from "@/components/ui/footer"
@@ -18,6 +19,17 @@ import { toast } from "sonner"
 // 更新导入语句，使用新的个人信息组件
 import { ProfileCard, ProfileStats } from "@/components/ui/profile-components"
 import { AvatarUpload } from "@/components/ui/avatar-upload"
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+}
 
 // 定义 UserProfile 类型
 interface UserProfile {

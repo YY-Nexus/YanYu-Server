@@ -1,5 +1,19 @@
 "use client"
 
+import type { Viewport } from "next"
+// import { defaultViewport } from "@/lib/viewport"
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+}
+
 import { useState, useEffect } from "react"
 import { MainLayout } from "@/components/layouts/main-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"

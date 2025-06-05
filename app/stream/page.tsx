@@ -1,5 +1,6 @@
 "use client"
 
+import type { Viewport } from "next"
 import { useState, useEffect, useRef } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -9,6 +10,17 @@ import { Label } from "@/components/ui/label"
 import { MainLayout } from "@/components/layouts/main-layout"
 import { Loader2, Play, Pause, RotateCcw, Settings, Zap } from "lucide-react"
 import { toast } from "sonner"
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+}
 
 export default function StreamPage() {
   const [input, setInput] = useState("")
