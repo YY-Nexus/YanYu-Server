@@ -32,7 +32,7 @@ export function Logo({ size = "md", showText = true, className = "", href = "/" 
         <div className={`${sizeClasses[size]} relative overflow-hidden rounded-xl shadow-lg`}>
           <Image
             src="/images/logo.png"
-            alt="YYC³-Nettcak Logo"
+            alt="YYC³ NetTrack Logo"
             width={80}
             height={80}
             className="w-full h-full object-contain"
@@ -50,7 +50,7 @@ export function Logo({ size = "md", showText = true, className = "", href = "/" 
 
       {showText && (
         <div className="flex flex-col">
-          <h1 className={`${textSizeClasses[size]} font-bold rainbow-text leading-tight`}>YYC³-Nettcak</h1>
+          <h1 className={`${textSizeClasses[size]} font-bold rainbow-text leading-tight`}>YYC³ NetTrack</h1>
           <p
             className={`text-blue-600/80 font-medium ${size === "sm" ? "text-xs" : size === "md" ? "text-sm" : "text-base"}`}
           >
@@ -86,7 +86,7 @@ export function LogoIcon({ size = "md", className = "" }: Pick<LogoProps, "size"
       <div className={`${sizeClasses[size]} relative overflow-hidden rounded-xl shadow-lg`}>
         <Image
           src="/images/logo.png"
-          alt="YYC³-Nettcak"
+          alt="YYC³ NetTrack"
           width={80}
           height={80}
           className="w-full h-full object-contain"
